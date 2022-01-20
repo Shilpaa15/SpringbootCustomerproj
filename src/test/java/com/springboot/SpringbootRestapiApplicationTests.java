@@ -38,10 +38,10 @@ class SpringbootRestapiApplicationTests {
 	public static Logger logger = LoggerFactory.getLogger(SpringbootRestapiApplicationTests .class);
 	
 	@Autowired
-	private CustomerService service=mock(CustomerService.class);
+	private CustomerService customerService=mock(CustomerService.class);
 	
 	@MockBean
-	private CustomerRepository repository;
+	private CustomerRepository customerRepository;
 	
 	
 	@Test
@@ -49,9 +49,9 @@ class SpringbootRestapiApplicationTests {
 		logger.info("save Customer test executing");
 		Customer customer = new Customer(1, "Manu", "male",25,"veg");
 		
-		when(repository.save(customer)).thenReturn(customer);
+		when(customerRepository.save(customer)).thenReturn(customer);
 		assertThat(customer.getId()).isGreaterThan(0);
-		assertEquals(customer, service.saveUser(customer));
+		assertEquals(customer,customerService.saveUser(customer));
 	}
 	
 	@Test
@@ -60,27 +60,28 @@ class SpringbootRestapiApplicationTests {
 		logger.info("Get Customer by Id test executing");
 		int id=1;
 		Optional<Customer> customer = Optional.ofNullable(new Customer(1, "Manu", "male",25,"veg"));
-		when(repository.findById(id)).thenReturn(customer);
-		assertEquals(customer,service.getCustomerById(id));
+		when(customerRepository.findById(id)).thenReturn(customer);
+		assertEquals(customer,customerService.getCustomerById(id));
 	}
 	
 	@Test
 	public void getAllCustomersTest() {
 		logger.info("Get All Customers test executing");
-		when(repository.findAll()).thenReturn(Stream
+		when(customerRepository.findAll()).thenReturn(Stream
 				.of(new Customer(2, "tejas", "male",26,"veg"), 
 						new Customer(3, "Darshan", "male",23,"non-veg"))
 				.collect(Collectors.toList()));
-		Assertions.assertFalse(service.getAllCustomers().isEmpty());
-		assertEquals(2, service.getAllCustomers().size());
+		Assertions.assertFalse(customerService.getAllCustomers().isEmpty());
+		assertEquals(2, customerService.getAllCustomers().size());
 	}
 	
 	@Test
 	public void deleteUserTest() {
 		logger.info("Delete Customers test executing");
-		Customer customer = new Customer(1, "Manu", "male",25,"veg");
-		service.deleteCustomer(customer);;
-		verify(repository, times(1)).delete(customer);
+		//Customer customer = new Customer(1, "Manu", "male",25,"veg");
+		int id=3;
+		customerService.deleteCustomerById(id);;
+		verify(customerRepository, times(1)).deleteById(id);
 	}
 	
 	@AfterEach

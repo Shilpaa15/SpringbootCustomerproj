@@ -12,7 +12,7 @@ import com.springboot.Repository.CustomerRepository;
 public class CustomerService {
 	@Autowired
 CustomerRepository customerRepository;
-	public Customer createCustomer() {
+	/*public Customer createCustomer() {
 		Customer customer=new Customer();
 		customer.setAge(20);
 		customer.setGender("Female");
@@ -20,7 +20,7 @@ CustomerRepository customerRepository;
 		customer.setPreferredFood("Non-veg");
         customerRepository.save(customer);
 		return customer;
-	}
+	}*/
 	public Customer saveUser(Customer customer)
 	{
 		return customerRepository.save(customer);
@@ -38,8 +38,9 @@ CustomerRepository customerRepository;
 		
 	}
 	
-	public void deleteCustomer(Customer customer)
+	public void deleteCustomerById(int id)
 	{
-		customerRepository.delete(customer);
+		customerRepository.findById(id);	
+		customerRepository.deleteById(id);
 	}
 }
